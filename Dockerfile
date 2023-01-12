@@ -8,7 +8,7 @@ RUN mvn clean package -DskipTests
 #
 # Package stage
 #
-FROM openjdk:11-jdk-slim
+FROM openjdk:8
 COPY --from=build /target/dh-docker.jar dh-docker.jar
 # ENV PORT=8080
 EXPOSE 8080
