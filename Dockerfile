@@ -1,4 +1,15 @@
-FROM openjdk:8
+#
+# Build stage
+#
+FROM maven:3.8.2-jdk-11 AS build
+COPY . .
+RUN mvn clean package -DskipTests
+
+#
+# Package stage
+#
+FROM openjdk:11-jdk-slim
+COPY --from=build /target/dh-docker.jar dh-docker.jar
+# ENV PORT=8080
 EXPOSE 8080
-ADD target/dh-docker.jar dh-docker.jar 
-ENTRYPOINT ["java","-jar","/dh-docker.jar"]
+ENTRYPOINT ["java","-jar","dh-docker.jar"]
